@@ -11,11 +11,10 @@ import org.springframework.stereotype.Component;
 public class StudentMapper {
     private final GroupService service;
 
+    @Autowired
     public StudentMapper(GroupService service) {
         this.service = service;
     }
-
-    @Autowired
 
     public Student toEntity(StudentDtoRequest request){
         return Student.builder()

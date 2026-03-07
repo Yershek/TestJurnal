@@ -4,6 +4,7 @@ import com.example.testjurnal.dto.request.ScheduleDtoRequest;
 import com.example.testjurnal.dto.response.ScheduleDtoResponse;
 import com.example.testjurnal.mappers.ScheduleMapper;
 import com.example.testjurnal.service.ScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class ScheduleManagementController {
     private final ScheduleService scheduleService;
     private final ScheduleMapper scheduleMapper;
 
-
+    @Autowired
     public ScheduleManagementController(
             ScheduleService scheduleService,
             ScheduleMapper scheduleMapper
@@ -37,7 +38,7 @@ public class ScheduleManagementController {
     }
 
     @PostMapping("/save")
-    private ResponseEntity<ScheduleDtoResponse> save(ScheduleDtoRequest request){
+    public ResponseEntity<ScheduleDtoResponse> save(@RequestBody ScheduleDtoRequest request){
         return ResponseEntity.ok(
                 scheduleMapper.toResponse(
                         scheduleService.save(scheduleMapper.toEntity(request))

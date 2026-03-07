@@ -36,7 +36,11 @@ public class SecurityConfig {
                     return config;
                 }))
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().authenticated()
+                        .requestMatchers(
+                                "/api/auth/register",
+                                "/api/auth/login"
+                        ).permitAll()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(new TokenFilter(jwtCore, usersService), UsernamePasswordAuthenticationFilter.class);
 

@@ -20,7 +20,7 @@ public class UserRole extends BaseEntity implements GrantedAuthority {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "m2m_users_roles",
+            name = "user_roles",
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )

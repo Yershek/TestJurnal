@@ -53,7 +53,7 @@ public class StudentController {
     }
 
     @PostMapping("/add")
-    private ResponseEntity<StudentDtoResponse> save(
+    public ResponseEntity<StudentDtoResponse> save(
             @RequestBody StudentDtoRequest request){
         return ResponseEntity.ok(
                 studentMapper.toResponse(
@@ -65,7 +65,7 @@ public class StudentController {
     }
 
     @PutMapping("/update")
-    private ResponseEntity<StudentDtoResponse> update(
+    public ResponseEntity<StudentDtoResponse> update(
             @RequestBody StudentDtoRequest request){
         return ResponseEntity.ok(
                 studentMapper.toResponse(
@@ -77,7 +77,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/delete/{id}")
-    private ResponseEntity<String> delete(@PathVariable Long id){
+    public ResponseEntity<String> delete(@PathVariable Long id){
         studentService.delete(id);
         return ResponseEntity.ok("Ok");
     }
