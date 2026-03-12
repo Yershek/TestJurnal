@@ -71,3 +71,10 @@ CREATE TABLE attendance (
     notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+insert into roles(name)
+values ('MONITOR'),
+       ('CURATOR'),
+       ('ADMIN')
+
+

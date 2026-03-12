@@ -19,6 +19,7 @@ public class ScheduleMapper {
     }
 
     public Schedule toEntity(ScheduleDtoRequest scheduleDtoRequest){
+        System.out.println(scheduleDtoRequest.toString());
         return Schedule.builder()
                 .group(service.getById(scheduleDtoRequest.getGroupId()))
                 .scheduleDate(scheduleDtoRequest.getScheduleDate())

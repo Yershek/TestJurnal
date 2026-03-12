@@ -1,5 +1,7 @@
 package com.example.testjurnal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,14 +20,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Users extends BaseEntity implements UserDetails {
 
     @Column(nullable = false, unique = true)
     private String username;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
+    @JsonIgnoreProperties("userEntityList")
     @ManyToMany(mappedBy = "userEntityList",fetch = FetchType.EAGER)
     private List<UserRole> roles;
 

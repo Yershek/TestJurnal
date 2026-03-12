@@ -28,7 +28,9 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users getCurrentUser() {
-        return (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Override
@@ -43,10 +45,6 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users register(Users users) {
-        if(usersRepository.findByUsername(users.getUsername()).isPresent()) {
-            throw new RuntimeException("User already exists");
-        }
-        users.setPassword(passwordEncoder.encode(users.getPassword()));
         return usersRepository.save(users);
     }
 

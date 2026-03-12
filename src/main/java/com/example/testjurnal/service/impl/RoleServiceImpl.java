@@ -15,10 +15,16 @@ public class RoleServiceImpl implements RoleService {
         this.repository = repository;
     }
 
-
     @Override
     public UserRole getById(Long id) {
         return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Not Found"));
+    }
+
+    @Override
+    public UserRole getByName(String name) {
+        System.out.println(name);
+        return repository.findUserRoleByName(name)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
     }
 }

@@ -14,4 +14,13 @@ public class ScheduleDtoRequest {
     private Long groupId;
     private LocalDate scheduleDate;
     private List<ScheduleLessonDtoRequest> lessons;
+
+    @Override
+    public String toString() {
+        return "ScheduleDtoRequest{" +
+                "groupId=" + groupId +
+                ", scheduleDate=" + scheduleDate +
+                ", lessons=" + lessons +
+                '}';
+    }
 }

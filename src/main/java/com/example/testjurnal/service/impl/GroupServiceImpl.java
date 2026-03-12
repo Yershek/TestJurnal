@@ -24,6 +24,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group getById(Long id) {
+        System.out.println(id);
         return groupRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not found group by id"));
     }

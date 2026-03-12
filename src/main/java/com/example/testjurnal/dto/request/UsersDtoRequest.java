@@ -10,6 +10,6 @@ import lombok.*;
 public class UsersDtoRequest {
     private String username;
     private String password;
-    private Long role;
+    private String role;
     private String groupId;
 }

@@ -1,5 +1,6 @@
 package com.example.testjurnal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,11 +14,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "roles")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UserRole extends BaseEntity implements GrantedAuthority {
 
     @Column(nullable = false)
     private String name;
 
+    @JsonIgnoreProperties("roles")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",

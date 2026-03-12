@@ -27,10 +27,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Schedule getScheduleByDateAndGroup(Long groupId, LocalDate time) {
-        return scheduleRepository.findScheduleByScheduleDate(time)
-                .filter(sh -> sh.getGroup().getId().equals(
-                        usersService.getCurrentUser().getGroupId())).orElseThrow(
-                        () -> new RuntimeException("Ошибка в getScheduleByDateAndGroup"));
+        System.out.println("Looking for schedule - groupId: " + groupId + ", date: " + time);
+        return scheduleRepository.findScheduleByScheduleDateAndGroupId(time, groupId)
+                .orElseThrow(() -> new RuntimeException("Schedule not found for groupId: " + groupId + ", date: " + time));
     }
 
     @Override
