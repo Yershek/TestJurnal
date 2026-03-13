@@ -23,19 +23,36 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     public List<Attendance> getAttendanceByDateAndLessonId(LocalDate date, Long lessonId) {
         return repository.findAttendancesByAttendanceDateAndScheduleLessonId(date, lessonId)
-                .orElse(List.of()) // Возвращаем пустой список, если ничего не найдено
-                .stream()
-                .filter( attendance -> attendance.getStudent().getGroup().getId().equals(usersService.getCurrentUser().getGroupId()))
-                .toList();
+                .orElse(List.of()); // Возвращаем пустой список, если ничего не найдено
     }
 
     @Override
     public Attendance save(Attendance attendance) {
-        return repository.save(attendance);
+        Attendance exam = repository.findAttendanceByStudentIdAndScheduleLessonId(
+                attendance.getStudent().getId(), attendance.getScheduleLesson().getId()
+        );
+        if (exam == null) {
+            return repository.save(attendance);
+        }else {
+            exam.setStatus(attendance.getStatus());
+            return repository.save(exam);
+        }
     }
 
     @Override
     public List<Attendance> saveAll(List<Attendance> attendances) {
-        return repository.saveAll(attendances);
+        return repository.saveAll(attendances.stream()
+                .map(attendance -> {
+                    Attendance existing = repository.findAttendanceByStudentIdAndScheduleLessonId(
+                            attendance.getStudent().getId(),
+                            attendance.getScheduleLesson().getId()
+                    );
+                    if (existing == null) {
+                        return attendance;
+                    } else {
+                        existing.setStatus(attendance.getStatus());
+                        return existing;
+                    }
+                }).toList());
     }
 }
