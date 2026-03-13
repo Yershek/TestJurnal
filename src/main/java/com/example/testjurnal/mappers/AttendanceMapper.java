@@ -20,6 +20,11 @@ public class AttendanceMapper {
     }
 
     public Attendance toEntity(AttendanceDtoRequest request){
+        // Проверяем, что studentId не null
+        if (request.getStudentId() == null) {
+            throw new IllegalArgumentException("Student ID cannot be null");
+        }
+        
         return Attendance.builder()
                 .student(service.getById(request.getStudentId()))
                 .scheduleLesson(scheduleLessonService.getById(request.getScheduleLessonId()))

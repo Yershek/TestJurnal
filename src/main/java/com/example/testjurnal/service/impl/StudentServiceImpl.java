@@ -20,7 +20,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> getStudentByGroupId(Long groupId) {
         return studentRepository.findStudentsByGroupId(groupId)
-                .orElseThrow(() -> new RuntimeException("Not found Student by Group id"));
+                .orElse(List.of());
     }
 
     @Override

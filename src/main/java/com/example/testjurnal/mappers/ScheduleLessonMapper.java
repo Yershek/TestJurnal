@@ -3,7 +3,9 @@ package com.example.testjurnal.mappers;
 import com.example.testjurnal.dto.request.ScheduleLessonDtoRequest;
 import com.example.testjurnal.dto.response.ScheduleLessonDtoResponse;
 import com.example.testjurnal.entity.ScheduleLesson;
+import com.example.testjurnal.entity.Schedule;
 import com.example.testjurnal.service.ScheduleService;
+import com.example.testjurnal.mappers.LessonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,9 +20,9 @@ public class ScheduleLessonMapper {
         this.lessonMapper = lessonMapper;
     }
 
-    public ScheduleLesson toEntity(ScheduleLessonDtoRequest request){
+    public ScheduleLesson toEntity(ScheduleLessonDtoRequest request, Schedule schedule) {
         return ScheduleLesson.builder()
-                .schedule(service.getById(request.getScheduleId()))
+                .schedule(schedule) // Используем переданный объект Schedule
                 .lesson(lessonMapper.toEntity(request.getLesson()))
                 .lessonOrder(request.getLessonOrder())
                 .build();

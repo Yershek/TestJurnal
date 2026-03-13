@@ -3,6 +3,7 @@ package com.example.testjurnal.mappers;
 import com.example.testjurnal.dto.request.ScheduleDtoRequest;
 import com.example.testjurnal.dto.response.ScheduleDtoResponse;
 import com.example.testjurnal.entity.Schedule;
+import com.example.testjurnal.entity.ScheduleLesson;
 import com.example.testjurnal.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,11 +21,39 @@ public class ScheduleMapper {
 
     public Schedule toEntity(ScheduleDtoRequest scheduleDtoRequest){
         System.out.println(scheduleDtoRequest.toString());
-        return Schedule.builder()
+        Schedule schedule = Schedule.builder()
                 .group(service.getById(scheduleDtoRequest.getGroupId()))
                 .scheduleDate(scheduleDtoRequest.getScheduleDate())
-                .lessons(scheduleDtoRequest.getLessons().stream().map(mapper::toEntity).toList())
                 .build();
+        
+        // Создаем ScheduleLesson с уже созданным Schedule
+        var lessons = scheduleDtoRequest.getLessons().stream()
+                .map(lessonRequest -> mapper.toEntity(lessonRequest, schedule))
+                .toList();
+        
+        schedule.setLessons(lessons);
+        return schedule;
+    }
+
+    public Schedule updateEntity(Schedule existingSchedule, ScheduleDtoRequest scheduleDtoRequest){
+        System.out.println("Updating existing schedule with ID: " + existingSchedule.getId());
+        System.out.println(scheduleDtoRequest.toString());
+        
+        // Обновляем группу и дату если нужно
+        existingSchedule.setGroup(service.getById(scheduleDtoRequest.getGroupId()));
+        existingSchedule.setScheduleDate(scheduleDtoRequest.getScheduleDate());
+        
+        // Создаем новую mutable коллекцию уроков вместо попытки очистить существующую
+        var newLessons = new java.util.ArrayList<ScheduleLesson>();
+        
+        // Создаем новые уроки для существующего расписания
+        var lessons = scheduleDtoRequest.getLessons().stream()
+                .map(lessonRequest -> mapper.toEntity(lessonRequest, existingSchedule))
+                .toList();
+        
+        newLessons.addAll(lessons);
+        existingSchedule.setLessons(newLessons);
+        return existingSchedule;
     }
 
     public ScheduleDtoResponse toResponse(Schedule schedule){

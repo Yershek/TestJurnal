@@ -23,7 +23,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     public List<Attendance> getAttendanceByDateAndLessonId(LocalDate date, Long lessonId) {
         return repository.findAttendancesByAttendanceDateAndScheduleLessonId(date, lessonId)
-                .orElseThrow(() -> new RuntimeException("Not Found"))
+                .orElse(List.of()) // Возвращаем пустой список, если ничего не найдено
                 .stream()
                 .filter( attendance -> attendance.getStudent().getGroup().getId().equals(usersService.getCurrentUser().getGroupId()))
                 .toList();

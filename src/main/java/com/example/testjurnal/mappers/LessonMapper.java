@@ -7,6 +7,8 @@ import com.example.testjurnal.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalTime;
+
 @Component
 public class LessonMapper {
     private final GroupService service;
@@ -37,7 +39,7 @@ public class LessonMapper {
                 .lessonNumber(lesson.getLessonNumber())
                 .startTime(lesson.getStartTime())
                 .endTime(lesson.getEndTime())
-                .groupId(lesson.getGroup().getId())
+                .groupId(lesson.getGroup() != null ? lesson.getGroup().getId() : null)
                 .createdAt(lesson.getCreatedAt())
                 .build();
     }

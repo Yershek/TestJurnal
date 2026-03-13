@@ -39,10 +39,25 @@ public class ScheduleManagementController {
 
     @PostMapping("/save")
     public ResponseEntity<ScheduleDtoResponse> save(@RequestBody ScheduleDtoRequest request){
-        return ResponseEntity.ok(
-                scheduleMapper.toResponse(
-                        scheduleService.save(scheduleMapper.toEntity(request))
-                )
-        );
+        // Сначала проверяем, существует ли расписание для этой даты и группы
+        var existingSchedule = scheduleService.getScheduleByDateAndGroup(request.getGroupId(), request.getScheduleDate());
+        
+        // Если расписание существует и имеет ID, обновляем его
+        if (existingSchedule.getId() != null) {
+            // Обновляем существующее расписание новыми уроками
+            var updatedSchedule = scheduleMapper.updateEntity(existingSchedule, request);
+            return ResponseEntity.ok(
+                    scheduleMapper.toResponse(
+                            scheduleService.save(updatedSchedule)
+                    )
+            );
+        } else {
+            // Если расписание новое, сохраняем как новое
+            return ResponseEntity.ok(
+                    scheduleMapper.toResponse(
+                            scheduleService.save(scheduleMapper.toEntity(request))
+                    )
+            );
+        }
     }
 }

@@ -12,11 +12,11 @@ import lombok.*;
 @Table(name = "schedule_lessons")
 public class ScheduleLesson extends BaseEntity{
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
